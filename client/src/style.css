@@ -1,0 +1,10 @@
+.list-group a:hover{
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}
+
+.logo{
+  height: 80px;
+  width: 90px;
+}
