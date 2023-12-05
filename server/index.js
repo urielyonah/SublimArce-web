@@ -70,6 +70,82 @@ app.get('/mclient', (req, res) => {
   });
 });
 
+//AGREGAR CLIENTE
+app.post('/addclient', (req, res) => {
+  const correo = req.body.email;
+  const nombre = req.body.name;
+  const contraseña = req.body.password;
+  const telefono = req.body.phone;
+  const direccion = req.body.address;
+
+  const sql = `INSERT INTO CLIENTES (NOMBRE, CORREO, CONTRASEÑA, TELEFONO, DIRECCION) VALUES ('${nombre}', '${correo}', '${contraseña}','${telefono}','${direccion}')`;
+  db.query(sql, (err, results) => {
+      if (err) {
+         throw err;
+      } else {
+          res.status(200).json(results);
+          console.log('Numero de registros insertados: ' + results.affectedRows);
+          console.log(nombre, correo, contraseña, telefono, direccion);
+      }
+  });
+});
+
+//EDITAR CLIENTE
+app.put('/updateclient/:id', (req, res) => {
+  const id = req.params.id;
+  const datos = req.body;
+  const sql = 'UPDATE CLIENTES SET CORREO = ?, CONTRASEÑA = ?, NOMBRE = ?, TELEFONO = ?, DIRECCION = ?  WHERE `ID-CLIENTE` = ?';
+  db.query(sql, [datos.email, datos.password, datos.name, datos.phone, datos.address, id], (err, results) => {
+      if (err) {
+          console.error('Error al actualizar los datos en la base de datos:', err);
+      res.status(500).json({ mensaje: 'Error al actualizar el cliente en la base de datos' });
+      return;
+      } else {
+          res.json({ mensaje: 'Usuario actualizado correctamente' });
+      }
+  });
+});
+
+//SELECCIONAR CLIENTE A EDITAR
+app.get('/mclient/:id', (req, res) => {
+  const id = req.params.id;
+  db.query('SELECT * FROM CLIENTES WHERE `ID-CLIENTE` = ?', [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Error en la consulta' });
+    } else {
+      console.log(results);
+      res.json(results);
+    }
+  });
+});
+
+//ELIMINAR CLIENTE
+app.delete('/deleteclient/:id', (req, res) => {
+  const id = req.params.id;
+
+  // Primero, obtén los datos del cliente que estás a punto de eliminar
+  db.query('SELECT * FROM CLIENTES WHERE `ID-CLIENTE` = ?', [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Error en la consulta' });
+    } else {
+      const clientData = results[0];
+      // Ahora, elimina al cliente
+      db.query('DELETE FROM CLIENTES WHERE `ID-CLIENTE` = ?', [id], (err, deleteResults) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({ message: 'Error al eliminar el cliente' });
+        } else {
+          console.log('Cliente eliminado:', clientData);
+          res.json({ message: 'Cliente eliminado correctamente', deletedClient: clientData });
+        }
+      });
+    }
+  });
+});
+
+
 app.listen(3001, () => {
   console.log('listening on port 3001');
 });

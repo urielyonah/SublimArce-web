@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from './Sidebar';
 import  Axios  from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 function Clientes(){
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
 
   useEffect(()=>{
@@ -12,6 +13,17 @@ function Clientes(){
     .then(res => setData(res.data))
     .catch(err => console.log(err));
   },[])
+
+  const handleDelete = (id) =>{
+    const confirm = window.confirm('¿Seguro que lo quieres eliminar?');
+    if(confirm){
+      Axios.delete(`http://localhost:3001/deleteclient/${id}`)
+      .then(res => {
+        window.location.reload();
+      })
+      .catch(err => console.log(err));
+    }
+  }
 
     return(
         <div className='container-fluid bg-secondary min-vh-100'>
@@ -23,7 +35,7 @@ function Clientes(){
             <h1 className='text-center'>Lista de Clientes</h1>
             <div className='w-100 rounded bg-white border shadow p-4'>
             <div className='d-flex justify-content-end'>
-              <Link className='btn btn-success'>Agregar +</Link>
+              <Link to='/createclient' className='btn btn-success'>Agregar +</Link>
             </div>
             <table className='table table-striped mx-auto'>
               <thead>
@@ -48,8 +60,8 @@ function Clientes(){
                       <td>{d.TELEFONO}</td>
                       <td>{d.DIRECCION}</td>
                       <td>
-                        <button className='btn btn-sm btn-primary me-2'>Editar</button>
-                        <button className='btn btn-sm btn-danger'>Eliminar</button>
+                        <Link to={`/updateclient/${d['ID-CLIENTE']}`} className='btn btn-sm btn-primary me-2'>Editar</Link>
+                        <button onClick={() => handleDelete(d['ID-CLIENTE'])} className='btn btn-sm btn-danger'>Eliminar</button>
                       </td>
                     </tr>
                   ))
