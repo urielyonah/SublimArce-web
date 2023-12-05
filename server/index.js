@@ -58,6 +58,18 @@ async function getUserByEmail(email) {
   });
 }
 
+//MOSTRAR CLIENTES
+app.get('/mclient', (req, res) => {
+  db.query('SELECT * FROM CLIENTES', (err, results) => {
+      if (err) {
+          res.status(500).json({ message: 'Error en la consulta' });
+      } else {
+          console.log(results);
+          res.json(results);
+      }
+  });
+});
+
 app.listen(3001, () => {
   console.log('listening on port 3001');
 });
