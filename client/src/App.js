@@ -14,6 +14,7 @@ import AgregarCamisa from './AgregarCamisa';
 import EditarCamisa from './EditarCamisa';
 import AgregarProducto from './AgregarProducto';
 import EditarProducto from './EditarProducto';
+import EditarPedido from './EditarPedido';
 
 
 
@@ -38,6 +39,7 @@ function App() {
         <Route path='/updateproduct/:id' element={<EditarProducto/>}></Route>
 
         <Route path='/buys' element={<Pedidos/>}></Route>
+        <Route path='/updatepedido/:id' element={<EditarPedido/>}></Route>
         
         <Route path='/client' element={<Clientes/>}></Route>
         <Route path='/createclient' element={<AgregarCliente/>}></Route>

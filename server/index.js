@@ -87,6 +87,18 @@ app.get('/mclient', (req, res) => {
   });
 });
 
+//MOSTRAR PEDIDOS
+app.get('/mpedidos', (req, res) => {
+  db.query('SELECT * FROM PEDIDOS', (err, results) => {
+    if (err) {
+      res.status(500).json({ message: 'Error en la consulta' });
+    } else {
+      console.log(results);
+      res.json(results);
+    }
+  });
+});
+
 //MOSTRAR PRODUCTOS
 app.get('/mproducts', (req, res) => {
   db.query('SELECT * FROM PRODUCTOS', (err, results) => {
@@ -250,6 +262,22 @@ app.put('/updateshirt/:id', (req, res) => {
   });
 });
 
+//EDITAR PEDIDO
+app.put('/updatepedido/:id', (req, res) => {
+  const id = req.params.id;
+  const datos = req.body;
+  const sql = 'UPDATE PEDIDOS SET `ID-CAMISAS-SERVICIOS` = ?, `ID-PRODUCTOS` = ?, CANTIDAD = ?, PRECIO = ?, STATUS = ?, `ID-CLIENTE` = ?  WHERE `ID-PEDIDOS` = ?';
+  db.query(sql, [datos.idcamisa, datos.idproducto, datos.cantidad, datos.precio, datos.status, datos.idcliente, id], (err, results) => {
+    if (err) {
+      console.error('Error al actualizar los datos en la base de datos:', err);
+      res.status(500).json({ mensaje: 'Error al actualizar el pedido en la base de datos' });
+      return;
+    } else {
+      res.json({ mensaje: 'Pedido actualizado correctamente' });
+    }
+  });
+});
+
 //EDITAR PRODUCTO
 app.put('/updateproduct/:id', (req, res) => {
   const id = req.params.id;
@@ -300,6 +328,20 @@ app.get('/madmin/:id', (req, res) => {
 app.get('/mshirt/:id', (req, res) => {
   const id = req.params.id;
   db.query('SELECT * FROM CAMISAS WHERE `ID-CAMISAS` = ?', [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Error en la consulta' });
+    } else {
+      console.log(results);
+      res.json(results);
+    }
+  });
+});
+
+//SELECCIONAR PEDIDOS A EDITAR
+app.get('/mpedido/:id', (req, res) => {
+  const id = req.params.id;
+  db.query('SELECT * FROM PEDIDOS WHERE `ID-PEDIDOS` = ?', [id], (err, results) => {
     if (err) {
       console.error(err);
       res.status(500).json({ message: 'Error en la consulta' });
@@ -403,6 +445,29 @@ app.delete('/deleteshirt/:id', (req, res) => {
         } else {
           console.log('Cliente eliminado:', camisaData);
           res.json({ message: 'Camisa eliminado correctamente', deletedcamisa: camisaData });
+        }
+      });
+    }
+  });
+});
+
+//ELIMINAR PEDIDO
+app.delete('/deletepedido/:id', (req, res) => {
+  const id = req.params.id;
+  db.query('SELECT * FROM PEDIDOS WHERE `ID-PEDIDOS` = ?', [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Error en la consulta' });
+    } else {
+      const pData = results[0];
+      // Ahora, elimina al admin
+      db.query('DELETE FROM PEDIDOS WHERE `ID-PEDIDOS` = ?', [id], (err, deleteResults) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({ message: 'Error al eliminar el camisa' });
+        } else {
+          console.log('Pedido eliminado:', pData);
+          res.json({ message: 'Pedido eliminado correctamente', deletedpedido: pData });
         }
       });
     }

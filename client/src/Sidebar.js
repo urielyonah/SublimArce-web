@@ -15,8 +15,11 @@ function Sidebar() {
     }, [navigate]);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/');
+        const confirm = window.confirm('¿Seguro que quieres cerrar sesión?');
+        if(confirm){
+            localStorage.removeItem('token');
+            navigate('/');
+      }
     };
 
     const pageClient = () =>{
