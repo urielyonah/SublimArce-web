@@ -8,6 +8,7 @@ function AgregarCliente(){
     const [values, setValues] = useState({
         email: '',
         password: '',
+        password2: '',
         name: '',
         phone: '',
         address: ''
@@ -15,6 +16,11 @@ function AgregarCliente(){
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        // Validación de contraseñas
+        if (values.password !== values.password2) {
+            alert("Las contraseñas no coinciden");
+            return;
+        }
         Axios.post('http://localhost:3001/addclient', values)
         .then(res => {
             console.log(res);

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from './images/logo_si.png';
 import './style.css'
 
@@ -12,7 +12,7 @@ function Sidebar() {
         if (!token) {
             navigate('/');
         }
-    }, []);
+    }, [navigate]);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -35,7 +35,9 @@ function Sidebar() {
     return (
         <div className='bg-white sidebar p-2'>
             <div className='m-2 text-center'>
-            <img className='logo mx-auto d-block' src={logo}/>
+                <Link to='/home' className='list-group-item py-2'>
+                    <img className='logo mx-auto d-block' src={logo} alt='Logo'/>
+                </Link>
             </div>
             <hr className='text-dark' />
             <div className='list-group list-group-flush'>

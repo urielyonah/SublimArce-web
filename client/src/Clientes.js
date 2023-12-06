@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from './Sidebar';
 import  Axios  from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 function Clientes(){
-  const navigate = useNavigate();
   const [data, setData] = useState([]);
 
   useEffect(()=>{

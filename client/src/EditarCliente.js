@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 
-function EdirarCliente(){
+function EditarCliente(){
     const navigate = useNavigate();
     const [values, setValues] = useState({
         email: '',
@@ -88,4 +88,4 @@ function EdirarCliente(){
     )
 }
 
-export default EdirarCliente
+export default EditarCliente
