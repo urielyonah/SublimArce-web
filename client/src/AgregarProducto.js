@@ -13,6 +13,12 @@ function AgregarProducto() {
         categoria: '',
         imagen: ''
     })
+    const [file, setFile] = useState(null)
+
+    const selectHandler = e => {
+        setFile(e.target.files[0]);
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData();
@@ -21,13 +27,15 @@ function AgregarProducto() {
         formData.append('descrip', values.descrip);
         formData.append('stock', values.stock);
         formData.append('categoria', values.categoria);
-        formData.append('imagen', values.imagen[0]);
+        formData.append('imagen', file);
         Axios.post('http://localhost:3001/addproduct', formData)
             .then(res => {
                 console.log(res);
                 navigate('/products')
             })
             .catch(err => console.log(err));
+        
+        setFile(null);
     }
 
 
@@ -65,6 +73,7 @@ function AgregarProducto() {
                     <div className='mb-2'>
                         <label>Imagen:</label>
                         <input
+                            onChange={selectHandler}
                             type="file"
                             name="imagen"
                             className='form-control'

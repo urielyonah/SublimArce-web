@@ -189,7 +189,9 @@ app.post('/addproduct', upload, (req, res) => {
   const descripcion = req.body.descrip;
   const stock = req.body.stock;
   const categoria = req.body.categoria;
-  const imagen = req.file ? req.file.filename : null;
+  const imagen = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename));
+
+  console.log(req.file)
 
   if (imagen) {
     console.log('Nombre del archivo:', imagen);
