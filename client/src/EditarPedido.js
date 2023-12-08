@@ -74,9 +74,13 @@ function EditarPedido(){
                         value={values.precio} onChange={e => setValues({...values, precio: e.target.value})} disabled/>
                     </div>
                     <div className='mb-2'>
-                        <label>status:</label>
-                        <input type="text" name="status" className='form-control' placeholder="Ingresa la descripcion"
-                        value={values.status} onChange={e => setValues({...values, status: e.target.value})} required/>
+                        <label>Status:</label>
+                        <select value={values.status} onChange={e => setValues({...values, status: e.target.value})} className='form-control'>
+                            <option value="PENDIENTE">PENDIENTE</option>
+                            <option value="EN PROCESO">EN PROCESO</option>
+                            <option value="PAGADO">PAGADO</option>
+                            <option value="ENTREGADO">ENTREGADO</option>
+                        </select>
                     </div>
                     <div className='mb-2'>
                         <label>ID-cliente:</label>

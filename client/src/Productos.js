@@ -60,7 +60,7 @@ function Productos(){
                       <td>{d.stock}</td>
                       <td>{d.CATEGORIA}</td>
                       <td>
-                        <Link to={`/updateproduct/${d['ID-PRODUCTOS']}`} className='btn btn-sm btn-primary me-2'>Editar</Link>
+                        <Link to={`/updateproduct/${d['ID-PRODUCTOS']}`} className='btn btn-sm btn-primary me-2 mb-2'>Editar</Link>
                         <button onClick={() => handleDelete(d['ID-PRODUCTOS'])} className='btn btn-sm btn-danger'>Eliminar</button>
                       </td>
                     </tr>

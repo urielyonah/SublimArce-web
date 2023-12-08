@@ -51,7 +51,7 @@ function EditarProducto(){
     return(
         <div className='d-flex w-100 vh-100 justify-content-center align-items-center bg-light'>
             <div className='w-50 border bg-white shadow px-5 pt-3 pb-5 rounded'>
-                <h1>Editar Camisa</h1>
+                <h1>Editar Producto</h1>
                 <form onSubmit={handleUpdate}>
                     <div className='mb-2'>
                         <label>Nomre:</label>
@@ -75,8 +75,11 @@ function EditarProducto(){
                     </div>
                     <div className='mb-2'>
                         <label>categoria:</label>
-                        <input type="text" name="categoria" className='form-control' placeholder="Ingresa la categoria"
-                        value={values.categoria} onChange={e => setValues({...values, categoria: e.target.value})} required/>
+                        <select value={values.categoria} onChange={e => setValues({...values, categoria: e.target.value})} className='form-control' required>
+                            <option value="CAMISAS" selected>CAMISAS</option>
+                            <option value="TAZAS">TAZAS</option>
+                            <option value="BOLSAS">BOLSAS</option>
+                        </select>
                     </div>
                     <div className='mb-2'>
                         <label>Imagen:</label>

@@ -14,6 +14,13 @@ function AgregarCamisa() {
         stock: '',
         imagen: ''
     })
+
+    const [file, setFile] = useState(null)
+
+    const selectHandler = e => {
+        setFile(e.target.files[0]);
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData();
@@ -23,13 +30,15 @@ function AgregarCamisa() {
         formData.append('precio', values.precio);
         formData.append('descrip', values.descrip);
         formData.append('stock', values.stock);
-        formData.append('imagen', values.imagen[0]);
+        formData.append('imagen', file);
         Axios.post('http://localhost:3001/addshirt', formData)
             .then(res => {
                 console.log(res);
                 navigate('/shirts')
             })
             .catch(err => console.log(err));
+
+        setFile(null)
     }
 
 
@@ -72,6 +81,7 @@ function AgregarCamisa() {
                     <div className='mb-2'>
                         <label>Imagen:</label>
                         <input
+                            onChange={selectHandler}
                             type="file"
                             name="imagen"
                             className='form-control'

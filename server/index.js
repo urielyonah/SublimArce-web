@@ -1,25 +1,22 @@
 const express = require('express');
-const mysql = require('mysql');
+const myconn = require('express-myconnection')
 const cors = require('cors');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const multer = require('multer');
+const path = require('path');
+const mysql = require('mysql');
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'images/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now());
+  destination: path.join(__dirname, './images'),
+  filename: (req, file, cb) =>{
+    cb(null, Date.now() + '-sublimeapp-' + file.originalname);
   }
 });
 
 const upload = multer({
   storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 10, // Establecer el límite en 10 MB
-  },
-});
+}).single('imagen')
 
 const app = express();
 app.use(cors());
@@ -156,22 +153,23 @@ app.post('/addclient', (req, res) => {
 });
 
 // AGREGAR CAMISA
-app.post('/addshirt', upload.single('imagen'), (req, res) => {
+app.post('/addshirt', upload, (req, res) => {
   const modelo = req.body.modelo;
   const talla = req.body.talla;
   const color = req.body.color;
   const precio = req.body.precio;
   const descripcion = req.body.descrip;
   const stock = req.body.stock;
-  const imagen = req.file ? req.file.filename : null;
+  const imagen = fs.readFileSync(path.join(__dirname, './images/' + req.file.filename));
 
+  console.log(req.file)
   if (imagen) {
-    // Aquí puedes realizar acciones adicionales si hay un archivo adjunto.
     console.log('Nombre del archivo:', imagen);
   } else {
     console.log('No se adjuntó ningún archivo.');
   }
 
+  
   const sql = `INSERT INTO CAMISAS (MODELO, TALLAS, COLOR, PRECIO, DESCRIPCION, stock, IMAGEN) VALUES (?, ?, ?, ?, ?, ?, ?)`;
   db.query(sql, [modelo, talla, color, precio, descripcion, stock, imagen], (err, results) => {
     if (err) {
@@ -185,7 +183,7 @@ app.post('/addshirt', upload.single('imagen'), (req, res) => {
 });
 
 // AGREGAR PRODUCTO
-app.post('/addproduct', upload.single('imagen'), (req, res) => {
+app.post('/addproduct', upload, (req, res) => {
   const nombre = req.body.nombre;
   const precio = req.body.precio;
   const descripcion = req.body.descrip;
